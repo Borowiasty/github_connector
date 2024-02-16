@@ -79,7 +79,7 @@ class GithubConnectorGetEndpoint {
          * Maintenance work of other modules
          * @return JSON with "Repository Name", "Owner Login", ["branch name", "sha"]
          */
-        var response = mutableListOf<HashMap<String, *>>()
+        val response = mutableListOf<HashMap<String, *>>()
         val baseUrl = "https://api.github.com/users/$username"
         val restClient: RestClient = RestClient
                                         .builder()
@@ -100,7 +100,7 @@ class GithubConnectorGetEndpoint {
             errorMessage["message"] = "User $username do not exist in GitHub"
             return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
         }
-        val uriRepos: String = "/repos"
+        val uriRepos = "/repos"
         try
         {
             val restResponseRepos = restClient
@@ -111,7 +111,7 @@ class GithubConnectorGetEndpoint {
 
             for (repo in restResponseRepos as List <HashMap<String, *>>)
             {
-                var responsePart : HashMap<String, Any> = hashMapOf()
+                val responsePart : HashMap<String, Any> = hashMapOf()
 
                 val repoName : String
                 val repoOwnerLogin : String
