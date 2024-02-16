@@ -1,5 +1,6 @@
 package borowiasty.github_connector
 
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -10,122 +11,138 @@ import org.springframework.web.client.RestClient
 class GithubConnectorApplicationTests {
 
 	@Test
-	fun return_repo_should_not_return_null() {
-		val base_url = "https://api.github.com/users/github/repos"
-		val rest_client: RestClient = RestClient
+	fun returnRepoShouldNotReturnNull() {
+		val baseUrl = "https://api.github.com/users/github/repos"
+		val restClient: RestClient = RestClient
 			.builder()
-			.baseUrl(base_url)
+			.baseUrl(baseUrl)
 			.build()
 
-		val rest_response_repos = rest_client
+		val restResponseRepos = restClient
 									.get()
 									.uri("")
 									.retrieve()
 									.body(object : ParameterizedTypeReference<Any?>() {})
 
-		var github_connector = Github_connector_get_endpoint()
-		val respone = github_connector.return_repo((rest_response_repos as List <HashMap<*, *>>)[0])
-		assertTrue(respone.length > 0)
+		val githubConnector = GithubConnectorGetEndpoint()
+		val response = githubConnector.returnRepo((restResponseRepos as List <HashMap<String, *>>)[0])
+		assertTrue(response.isNotEmpty())
 	}
 
 	@Test
-	fun return_repo_should_return_string()
+	fun returnRepoShouldReturnString()
 	{
-		val base_url = "https://api.github.com/users/github/repos"
-		val rest_client: RestClient = RestClient
+		val baseUrl = "https://api.github.com/users/github/repos"
+		val restClient: RestClient = RestClient
 			.builder()
-			.baseUrl(base_url)
+			.baseUrl(baseUrl)
 			.build()
 
-		val rest_response_repos = rest_client
+		val restResponseRepos = restClient
 			.get()
 			.uri("")
 			.retrieve()
 			.body(object : ParameterizedTypeReference<Any?>() {})
 
-		var github_connector = Github_connector_get_endpoint()
-		val respone = github_connector.return_repo((rest_response_repos as List <HashMap<*, *>>)[0])
-		assertTrue(respone is String)
+		val githubConnector = GithubConnectorGetEndpoint()
+		val response = githubConnector.returnRepo((restResponseRepos as List <HashMap<String, *>>)[0])
+		assertTrue(response is String)
 	}
 
 	@Test
-	fun return_owner_login_should_not_return_null() {
-		val base_url = "https://api.github.com/users/github/repos"
-		val rest_client: RestClient = RestClient
+	fun returnOwnerLoginShouldNotReturnNull() {
+		val baseUrl = "https://api.github.com/users/github/repos"
+		val restClient: RestClient = RestClient
 			.builder()
-			.baseUrl(base_url)
+			.baseUrl(baseUrl)
 			.build()
 
-		val rest_response_repos = rest_client
+		val restResponseRepos = restClient
 			.get()
 			.uri("")
 			.retrieve()
 			.body(object : ParameterizedTypeReference<Any?>() {})
 
-		var github_connector = Github_connector_get_endpoint()
-		val respone = github_connector.return_owner_login((rest_response_repos as List <HashMap<*, *>>)[0])
-		assertTrue(respone.length > 0)
+		val githubConnector = GithubConnectorGetEndpoint()
+		val response = githubConnector.returnOwnerLogin((restResponseRepos as List <HashMap<String, *>>)[0])
+		assertTrue(response.isNotEmpty())
 	}
 
 	@Test
-	fun return_owner_login_should_return_string()
+	fun returnOwnerLoginShouldReturnString()
 	{
-		val base_url = "https://api.github.com/users/github/repos"
-		val rest_client: RestClient = RestClient
+		val baseUrl = "https://api.github.com/users/github/repos"
+		val restClient: RestClient = RestClient
 			.builder()
-			.baseUrl(base_url)
+			.baseUrl(baseUrl)
 			.build()
 
-		val rest_response_repos = rest_client
+		val restResponseRepos = restClient
 			.get()
 			.uri("")
 			.retrieve()
 			.body(object : ParameterizedTypeReference<Any?>() {})
 
-		var github_connector = Github_connector_get_endpoint()
-		val respone = github_connector.return_owner_login((rest_response_repos as List <HashMap<*, *>>)[0])
-		assertTrue(respone is String)
+		val githubConnector = GithubConnectorGetEndpoint()
+		val response = githubConnector.returnOwnerLogin((restResponseRepos as List <HashMap<String, *>>)[0])
+		assertTrue(response is String)
 	}
 
 	@Test
-	fun return_branches_should_not_return_null()
+	fun returnBranchesShouldNotReturnNull()
 	{
-		val base_url = "https://api.github.com/users/github/repos"
-		val rest_client: RestClient = RestClient
+		val baseUrl = "https://api.github.com/users/github/repos"
+		val restClient: RestClient = RestClient
 			.builder()
-			.baseUrl(base_url)
+			.baseUrl(baseUrl)
 			.build()
 
-		val rest_response_repos = rest_client
+		val restResponseRepos = restClient
 			.get()
 			.uri("")
 			.retrieve()
 			.body(object : ParameterizedTypeReference<Any?>() {})
 
-		var github_connector = Github_connector_get_endpoint()
-		val respone = github_connector.return_branches(((rest_response_repos as List <HashMap<*, *>>)[0]),base_url,rest_client)
-		assertTrue(respone.size > 0)
+		val githubConnector = GithubConnectorGetEndpoint()
+		val response = githubConnector.returnBranches(((restResponseRepos as List <HashMap<String, *>>)[0]),baseUrl,restClient)
+		assertTrue(response.size > 0)
 	}
 
 	@Test
-	fun return_branches_should_return_MutableList()
+	fun returnBranchesShouldReturnMutableList()
 	{
-		val base_url = "https://api.github.com/users/github/repos"
-		val rest_client: RestClient = RestClient
+		val baseUrl = "https://api.github.com/users/github/repos"
+		val restClient: RestClient = RestClient
 			.builder()
-			.baseUrl(base_url)
+			.baseUrl(baseUrl)
 			.build()
 
-		val rest_response_repos = rest_client
+		val restResponseRepos = restClient
 			.get()
 			.uri("")
 			.retrieve()
 			.body(object : ParameterizedTypeReference<Any?>() {})
 
-		var github_connector = Github_connector_get_endpoint()
-		val respone = github_connector.return_branches(((rest_response_repos as List <HashMap<*, *>>)[0]),base_url,rest_client)
-		assertTrue(respone is MutableList<*>)
+		val githubConnector = GithubConnectorGetEndpoint()
+		val response = githubConnector.returnBranches(((restResponseRepos as List <HashMap<String, *>>)[0]),baseUrl,restClient)
+		assertTrue(response is MutableList<*>)
 	}
 
+	@Test
+	fun isForkShouldReturnTrue()
+	{
+		val arg : HashMap<String, Boolean> = hashMapOf()
+		arg["fork"] = true
+		val githubConnector = GithubConnectorGetEndpoint()
+		assertTrue(githubConnector.isFork(arg))
+	}
 
+	@Test
+	fun isForkShouldReturnFalse()
+	{
+		val arg : HashMap<String, Boolean> = hashMapOf()
+		arg["fork"] = false
+		val githubConnector = GithubConnectorGetEndpoint()
+		assertFalse(githubConnector.isFork(arg))
+	}
 }

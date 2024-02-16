@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient
 @RestController
 class GithubConnectorGetEndpoint {
 
-    fun returnRepo(repo : HashMap<String, *>) : String
+    fun returnRepo(repo: HashMap<String, *>) : String
     {
         /**
          * @return repostitory name from given repo HashMap as String
@@ -24,7 +24,7 @@ class GithubConnectorGetEndpoint {
         return repoName
     }
 
-    fun returnOwnerLogin(repo : HashMap<String, *>) : String
+    fun returnOwnerLogin(repo: HashMap<String, *>) : String
     {
         /**
          * @return login of given repository as String
@@ -34,9 +34,9 @@ class GithubConnectorGetEndpoint {
         return repoOwnerLogin
     }
 
-    fun returnBranches(repo : HashMap<String, *>,
-                       baseUrl : String,
-                       restClient: RestClient) : MutableList<HashMap<String, String>>
+    fun returnBranches(repo: HashMap<String, *>,
+                        baseUrl: String,
+                        restClient: RestClient) : MutableList<HashMap<String, String>>
     {
         /**
          * List every branch from given repository
