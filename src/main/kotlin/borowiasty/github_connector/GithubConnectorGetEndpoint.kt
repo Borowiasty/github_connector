@@ -49,17 +49,17 @@ class GithubConnectorGetEndpoint {
 
         val uriRepos = "/repos"
 
-        uriBranches = uriBranches.replace(baseUrl + uriRepos, "")
+        uriBranches = uriBranches.replace(baseUrl.plus(uriRepos), "")
 
         val rest_response_branches = restClient
-                                    .get()
-                                    .uri(uriBranches)
-                                    .retrieve()
-                                    .body(object : ParameterizedTypeReference<Any?>() {})
+                                        .get()
+                                        .uri(uriBranches)
+                                        .retrieve()
+                                        .body(object : ParameterizedTypeReference<Any?>() {})
 
         val branches = mutableListOf<HashMap<String, String>>()
         for (branch in rest_response_branches as List <HashMap<String, *>>) {
-            val singleBranch : HashMap<String, String> = HashMap<String, String>()
+            val singleBranch : HashMap<String, String> = HashMap()
 
             singleBranch["Branch name"] = branch["name"].toString()
 
@@ -109,7 +109,9 @@ class GithubConnectorGetEndpoint {
             errorMessage["message"] = "User $username do not exist in GitHub"
             return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
         }
+
         val uriRepos = "/repos"
+
         try
         {
             val restResponseRepos = restClient
