@@ -71,6 +71,15 @@ class GithubConnectorGetEndpoint {
         return branches
     }
 
+    fun isFork(repo : HashMap<String, *>) : Boolean
+    {
+        /**
+         * check if given repository is a fork
+         * @return true or false dependent if repo is a fork
+         */
+        return repo["fork"] == true
+    }
+
     @GetMapping("/user/{username}")
     @ResponseBody
     fun getUser(@PathVariable("username") username: String?): Any  {
@@ -111,21 +120,24 @@ class GithubConnectorGetEndpoint {
 
             for (repo in restResponseRepos as List <HashMap<String, *>>)
             {
-                val responsePart : HashMap<String, Any> = hashMapOf()
+                if(!isFork(repo))
+                {
+                    val responsePart : HashMap<String, Any> = hashMapOf()
 
-                val repoName : String
-                val repoOwnerLogin : String
-                val branches : MutableList<HashMap<String, String>>
+                    val repoName : String
+                    val repoOwnerLogin : String
+                    val branches : MutableList<HashMap<String, String>>
 
-                repoName = returnRepo(repo)
-                repoOwnerLogin = returnOwnerLogin(repo)
-                branches = returnBranches(repo, baseUrl, restClient)
+                    repoName = returnRepo(repo)
+                    repoOwnerLogin = returnOwnerLogin(repo)
+                    branches = returnBranches(repo, baseUrl, restClient)
 
-                responsePart["Repo name"] = repoName
-                responsePart["Repo owner login"] = repoOwnerLogin
-                responsePart["Branches"] = branches
+                    responsePart["Repo name"] = repoName
+                    responsePart["Repo owner login"] = repoOwnerLogin
+                    responsePart["Branches"] = branches
 
-                response.add(responsePart)
+                    response.add(responsePart)
+                }
             }
             return response
 
