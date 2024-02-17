@@ -19,13 +19,13 @@ class GithubConnectorApplicationTests {
 			.build()
 
 		val restResponseRepos = restClient
-									.get()
-									.uri("")
-									.retrieve()
-									.body(object : ParameterizedTypeReference<Any?>() {})
+			.get()
+			.uri("")
+			.retrieve()
+			.body(object : ParameterizedTypeReference<Any?>() {})
 
 		val githubConnector = GithubConnectorGetEndpoint()
-		val response = githubConnector.returnRepo((restResponseRepos as List <HashMap<String, *>>)[0])
+		val response = githubConnector.returnRepoName((restResponseRepos as List <HashMap<String, *>>)[0])
 		assertTrue(response.isNotEmpty())
 	}
 
@@ -34,18 +34,18 @@ class GithubConnectorApplicationTests {
 	{
 		val baseUrl = "https://api.github.com/users/github/repos"
 		val restClient: RestClient = RestClient
-										.builder()
-										.baseUrl(baseUrl)
-										.build()
+			.builder()
+			.baseUrl(baseUrl)
+			.build()
 
 		val restResponseRepos = restClient
-										.get()
-										.uri("")
-										.retrieve()
-										.body(object : ParameterizedTypeReference<Any?>() {})
+			.get()
+			.uri("")
+			.retrieve()
+			.body(object : ParameterizedTypeReference<Any?>() {})
 
 		val githubConnector = GithubConnectorGetEndpoint()
-		val response = githubConnector.returnRepo((restResponseRepos as List <HashMap<String, *>>)[0])
+		val response = githubConnector.returnRepoName((restResponseRepos as List <HashMap<String, *>>)[0])
 		assertTrue(response is String)
 	}
 
@@ -53,9 +53,9 @@ class GithubConnectorApplicationTests {
 	fun returnOwnerLoginShouldNotReturnNull() {
 		val baseUrl = "https://api.github.com/users/github/repos"
 		val restClient: RestClient = RestClient
-										.builder()
-										.baseUrl(baseUrl)
-										.build()
+			.builder()
+			.baseUrl(baseUrl)
+			.build()
 
 		val restResponseRepos = restClient
 			.get()
@@ -73,9 +73,9 @@ class GithubConnectorApplicationTests {
 	{
 		val baseUrl = "https://api.github.com/users/github/repos"
 		val restClient: RestClient = RestClient
-										.builder()
-										.baseUrl(baseUrl)
-										.build()
+			.builder()
+			.baseUrl(baseUrl)
+			.build()
 
 		val restResponseRepos = restClient
 			.get()
@@ -93,15 +93,15 @@ class GithubConnectorApplicationTests {
 	{
 		val baseUrl = "https://api.github.com/users/github/repos"
 		val restClient: RestClient = RestClient
-										.builder()
-										.baseUrl(baseUrl)
-										.build()
+			.builder()
+			.baseUrl(baseUrl)
+			.build()
 
 		val restResponseRepos = restClient
-										.get()
-										.uri("")
-										.retrieve()
-										.body(object : ParameterizedTypeReference<Any?>() {})
+			.get()
+			.uri("")
+			.retrieve()
+			.body(object : ParameterizedTypeReference<Any?>() {})
 
 		val githubConnector = GithubConnectorGetEndpoint()
 		val response = githubConnector.returnBranches(((restResponseRepos as List <HashMap<String, *>>)[0]),baseUrl,restClient)
@@ -113,15 +113,15 @@ class GithubConnectorApplicationTests {
 	{
 		val baseUrl = "https://api.github.com/users/github/repos"
 		val restClient: RestClient = RestClient
-										.builder()
-										.baseUrl(baseUrl)
-										.build()
+			.builder()
+			.baseUrl(baseUrl)
+			.build()
 
 		val restResponseRepos = restClient
-										.get()
-										.uri("")
-										.retrieve()
-										.body(object : ParameterizedTypeReference<Any?>() {})
+			.get()
+			.uri("")
+			.retrieve()
+			.body(object : ParameterizedTypeReference<Any?>() {})
 
 		val githubConnector = GithubConnectorGetEndpoint()
 		val response = githubConnector.returnBranches(((restResponseRepos as List <HashMap<String, *>>)[0]),baseUrl,restClient)

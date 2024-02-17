@@ -14,10 +14,10 @@ import org.springframework.web.client.RestClient
 @RestController
 class GithubConnectorGetEndpoint {
 
-    fun returnRepo(repo: HashMap<String, *>) : String
+    fun returnRepoName(repo: HashMap<String, *>) : String
     {
         /**
-         * @return repostitory name from given repo HashMap as String
+         * @return repository name from given repo HashMap as String
          */
         val repoName: String = repo["name"].toString()
 
@@ -51,14 +51,14 @@ class GithubConnectorGetEndpoint {
 
         uriBranches = uriBranches.replace(baseUrl.plus(uriRepos), "")
 
-        val rest_response_branches = restClient
-                                        .get()
-                                        .uri(uriBranches)
-                                        .retrieve()
-                                        .body(object : ParameterizedTypeReference<Any?>() {})
+        val restResponseBranches = restClient
+            .get()
+            .uri(uriBranches)
+            .retrieve()
+            .body(object : ParameterizedTypeReference<Any?>() {})
 
         val branches = mutableListOf<HashMap<String, String>>()
-        for (branch in rest_response_branches as List <HashMap<String, *>>) {
+        for (branch in restResponseBranches as List <HashMap<String, *>>) {
             val singleBranch : HashMap<String, String> = HashMap()
 
             singleBranch["Branch name"] = branch["name"].toString()
@@ -80,6 +80,13 @@ class GithubConnectorGetEndpoint {
         return repo["fork"] == true
     }
 
+    fun errorMessageLogger(status: HttpStatus, message: String): ResponseEntity<HashMap<String, Any>> {
+        val errorMessage = HashMap<String, Any>()
+        errorMessage["status"] = status
+        errorMessage["message"] = message
+        return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
+    }
+
     @GetMapping("/user/{username}")
     @ResponseBody
     fun getUser(@PathVariable("username") username: String?): Any  {
@@ -91,23 +98,20 @@ class GithubConnectorGetEndpoint {
         val response = mutableListOf<HashMap<String, *>>()
         val baseUrl = "https://api.github.com/users/$username"
         val restClient: RestClient = RestClient
-                                        .builder()
-                                        .baseUrl(baseUrl)
-                                        .build()
+            .builder()
+            .baseUrl(baseUrl)
+            .build()
         try
         {
-            val restResponseUser = restClient
-                                    .get()
-                                    .uri("")
-                                    .retrieve()
-                                    .body(object : ParameterizedTypeReference<String>() {})
+            restClient
+                .get()
+                .uri("")
+                .retrieve()
+                .body(object : ParameterizedTypeReference<String>() {})
         }
         catch (e: NotFound)     //404 GitHub API error handle
         {
-            val errorMessage = HashMap<String, Any>()
-            errorMessage["status"] = HttpStatus.NOT_FOUND
-            errorMessage["message"] = "User $username do not exist in GitHub"
-            return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
+            return errorMessageLogger(HttpStatus.NOT_FOUND, "User $username do not exist in GitHub")
         }
 
         val uriRepos = "/repos"
@@ -115,10 +119,10 @@ class GithubConnectorGetEndpoint {
         try
         {
             val restResponseRepos = restClient
-                                        .get()
-                                        .uri(uriRepos)
-                                        .retrieve()
-                                        .body(object : ParameterizedTypeReference<Any?>() {})
+                .get()
+                .uri(uriRepos)
+                .retrieve()
+                .body(object : ParameterizedTypeReference<Any?>() {})
 
             for (repo in restResponseRepos as List <HashMap<String, *>>)
             {
@@ -130,7 +134,7 @@ class GithubConnectorGetEndpoint {
                     val repoOwnerLogin : String
                     val branches : MutableList<HashMap<String, String>>
 
-                    repoName = returnRepo(repo)
+                    repoName = returnRepoName(repo)
                     repoOwnerLogin = returnOwnerLogin(repo)
                     branches = returnBranches(repo, baseUrl, restClient)
 
@@ -146,10 +150,7 @@ class GithubConnectorGetEndpoint {
         }
         catch (e: Forbidden)    //GitHub API rate limit exceeded error handle
         {
-            val errorMessage = HashMap<String, Any>()
-            errorMessage["status"] = HttpStatus.FORBIDDEN
-            errorMessage["message"] = e.message.toString()
-            return ResponseEntity(errorMessage, HttpStatus.FORBIDDEN)
+            return errorMessageLogger( HttpStatus.FORBIDDEN, e.message.toString())
         }
     }
 }
